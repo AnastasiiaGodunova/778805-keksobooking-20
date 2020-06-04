@@ -26,6 +26,16 @@ var PIN_OBJ = {
   guests: {
     min: 0,
     max: 2
+  },
+
+  x: {
+    min: 50,
+    max: 1150
+  },
+
+  y: {
+    min: 130,
+    max: 630
   }
 };
 
@@ -49,13 +59,13 @@ var getRandomInteger = function (min, max) {
 
 /* Возвращает случайный элемент массива*/
 var getRandomArrElement = function (arr) {
-  return arr[getRandomInteger(0, arr.length)];
+  return arr[getRandomInteger(0, arr.length - 1)];
 };
 
 /* Возвращает объект случайных элементов из массива*/
 var getRandomArray = function (arr) {
   var randomObject = {};
-  for (var i = 0; i <= getRandomInteger(1, arr.length); i++) {
+  for (var i = 0; i <= getRandomInteger(1, arr.length - 1); i++) {
     var randomElement = getRandomArrElement(arr);
     randomObject[randomElement] = true;
   }
@@ -67,8 +77,6 @@ var getRandomArray = function (arr) {
 var getRandomPins = function () {
   var pinsList = [];
   for (var i = 1; i <= AMOUNT_PINS; i++) {
-    var x = getRandomInteger(50, 1150);
-    var y = getRandomInteger(130, 630);
     var randomPin = {
       author: {
         avatar: 'img/avatars/user0' + i + '.png'
@@ -76,7 +84,8 @@ var getRandomPins = function () {
 
       offer: {
         title: getRandomArrElement(PIN_OBJ.title),
-        address: x + ', ' + y,
+        address: getRandomInteger(PIN_OBJ.x.min, PIN_OBJ.x.max) + ', '
+               + getRandomInteger(PIN_OBJ.y.min, PIN_OBJ.y.max),
         price: getRandomInteger(PIN_OBJ.price.min, PIN_OBJ.price.max),
         type: getRandomArrElement(PIN_OBJ.type),
         rooms: getRandomInteger(PIN_OBJ.rooms.min, PIN_OBJ.rooms.max),
@@ -89,8 +98,8 @@ var getRandomPins = function () {
       },
 
       location: {
-        x: x,
-        y: y
+        x: getRandomInteger(PIN_OBJ.x.min, PIN_OBJ.x.max),
+        y: getRandomInteger(PIN_OBJ.y.min, PIN_OBJ.y.max)
       }
     };
     pinsList.push(randomPin);
