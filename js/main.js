@@ -47,6 +47,12 @@ var mapPin = document.querySelector('#pin')
 var mapCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
+var typeToHouse = {
+  flat: 'Квартира',
+  bungalo: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец'
+};
 
 /* Удаляет класс*/
 var removeClass = function (elem, elemClass) {
@@ -141,11 +147,14 @@ var renderPins = function () {
 renderPins();
 
 /* Возвращает список удобств*/
-var getFillFeature = function (obj) {
+var getFillFeature = function (arr, block) {
   var featureFragment = document.createDocumentFragment();
-  for (var i = 0; i < obj.offer.features.length; i++) {
+
+  block.innerHTML = '';
+
+  for (var i = 0; i < arr.length; i++) {
     var featureItem = document.createElement('li');
-    featureItem.classList.add('popup__feature', 'popup__feature--' + obj.offer.features[i]);
+    featureItem.classList.add('popup__feature', 'popup__feature--' + arr[i]);
     featureFragment.appendChild(featureItem);
   }
 
@@ -153,11 +162,14 @@ var getFillFeature = function (obj) {
 };
 
 /* Возвращает список фото жилья*/
-var getFillPhoto = function (obj) {
+var getFillPhoto = function (arr, block) {
   var photoFragment = document.createDocumentFragment();
-  for (var i = 0; i < obj.offer.photos.length; i++) {
+
+  block.innerHTML = '';
+
+  for (var i = 0; i < arr.length; i++) {
     var photoImg = document.createElement('img');
-    photoImg.src = obj.offer.photos[i];
+    photoImg.src = arr[i];
     photoImg.width = 45;
     photoImg.alt = 'Фотография жилья';
     photoImg.classList.add('popup__photo');
@@ -172,50 +184,27 @@ var getFillPhoto = function (obj) {
 var getFillCard = function (obj) {
   var cardCopy = mapCard.cloneNode(true);
 
-  var cardTitle = cardCopy.querySelector('.popup__title');
-  var cardAddress = cardCopy.querySelector('.popup__text--address');
-  var cardPrise = cardCopy.querySelector('.popup__text--price');
-  var cardCapacity = cardCopy.querySelector('.popup__text--capacity');
-  var cardTime = cardCopy.querySelector('.popup__text--time');
-  var cardDescription = cardCopy.querySelector('.popup__description');
-  var cardAvatar = cardCopy.querySelector('.popup__avatar');
-
-  /* Отрисовывает заголовок, адрес и цену*/
-  cardTitle.textContent = obj.offer.title;
-  cardAddress.textContent = obj.offer.address;
-  cardPrise.textContent = obj.offer.price + '₽/ночь';
-
-  /* Отрисовывает тип жилья*/
-  var typeToHouse = {
-    flat: 'Квартира',
-    bungalo: 'Бунгало',
-    house: 'Дом',
-    palace: 'Дворец'
-  };
-  var popupType = cardCopy.querySelector('.popup__type');
-  popupType.textContent = typeToHouse[obj.offer.type];
-
-  /* Отрисовывает количество комнат и гостей*/
-  cardCapacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
-
-  /* Отрисовывает время заезда и выезда*/
-  cardTime.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
-
-  /* Отрисовывает список удобств*/
+  var title = cardCopy.querySelector('.popup__title');
+  var address = cardCopy.querySelector('.popup__text--address');
+  var price = cardCopy.querySelector('.popup__text--price');
+  var type = cardCopy.querySelector('.popup__type');
+  var capacity = cardCopy.querySelector('.popup__text--capacity');
+  var time = cardCopy.querySelector('.popup__text--time');
   var featuresList = cardCopy.querySelector('.popup__features');
-  featuresList.innerHTML = '';
-  featuresList.appendChild(getFillFeature(obj));
-
-  /* Отрисовывает описание*/
-  cardDescription.textContent = obj.offer.description;
-
-  /* Отрисовывает фото жилья*/
+  var description = cardCopy.querySelector('.popup__description');
   var photos = cardCopy.querySelector('.popup__photos');
-  photos.innerHTML = '';
-  photos.appendChild(getFillPhoto(obj));
+  var avatar = cardCopy.querySelector('.popup__avatar');
 
-  /* Отрисовывает аватарку*/
-  cardAvatar.src = obj.author.avatar;
+  title.textContent = obj.offer.title;
+  address.textContent = obj.offer.address;
+  price.textContent = obj.offer.price + '₽/ночь';
+  type.textContent = typeToHouse[obj.offer.type];
+  capacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+  time.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+  featuresList.appendChild(getFillFeature(obj.offer.features, featuresList));
+  description.textContent = obj.offer.description;
+  photos.appendChild(getFillPhoto(obj.offer.photos, photos));
+  avatar.src = obj.author.avatar;
 
   return cardCopy;
 };
