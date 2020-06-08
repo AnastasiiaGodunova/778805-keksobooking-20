@@ -140,64 +140,82 @@ var renderPins = function () {
 };
 renderPins();
 
-/* Возвращает заполненное объявление*/
-var getFillCard = function () {
-  var cardCopy = mapCard.cloneNode(true);
-
-  /* Отрисовывает заголовок, адрес и цену*/
-  cardCopy.querySelector('.popup__title').textContent = pins[0].offer.title;
-  cardCopy.querySelector('.popup__text--address').textContent = pins[0].offer.address;
-  cardCopy.querySelector('.popup__text--price').textContent = pins[0].offer.price + '₽/ночь';
-
-  /* Отрисовывает тип жилья*/
-  var popupType = cardCopy.querySelector('.popup__type');
-  if (pins[0].offer.type === 'flat') {
-    popupType.textContent = 'Квартира';
-  } else if (pins[0].offer.type === 'bungalo') {
-    popupType.textContent = 'Бунгало';
-  } else if (pins[0].offer.type === 'house') {
-    popupType.textContent = 'Дом';
-  } else if (pins[0].offer.type === 'palace') {
-    popupType.textContent = 'Дворец';
-  }
-
-  /* Отрисовывает количество комнат и гостей*/
-  cardCopy.querySelector('.popup__text--capacity').textContent =
-    pins[0].offer.rooms + ' комнаты для ' + pins[0].offer.guests + ' гостей';
-
-  /* Отрисовывает время заезда и выезда*/
-  cardCopy.querySelector('.popup__text--time').textContent =
-    'Заезд после ' + pins[0].offer.checkin + ', выезд до ' + pins[0].offer.checkout;
-
-  /* Отрисовывает список удобств*/
+/* Возвращает список удобств*/
+var getFillFeature = function (obj) {
   var featureFragment = document.createDocumentFragment();
-  for (var i = 0; i < pins[0].offer.features.length; i++) {
+  for (var i = 0; i < obj.offer.features.length; i++) {
     var featureItem = document.createElement('li');
-    featureItem.classList.add('popup__feature', 'popup__feature--' + pins[0].offer.features[i]);
+    featureItem.classList.add('popup__feature', 'popup__feature--' + obj.offer.features[i]);
     featureFragment.appendChild(featureItem);
   }
-  var featuresList = cardCopy.querySelector('.popup__features');
-  featuresList.innerHTML = '';
-  featuresList.appendChild(featureFragment);
 
-  /* Отрисовывает описание*/
-  cardCopy.querySelector('.popup__description').textContent = pins[0].offer.description;
+  return featureFragment;
+};
 
-  /* Отрисовывает фото жилья*/
+/* Возвращает список фото жилья*/
+var getFillPhoto = function (obj) {
   var photoFragment = document.createDocumentFragment();
-  for (var j = 0; j < pins[0].offer.photos.length; j++) {
+  for (var i = 0; i < obj.offer.photos.length; i++) {
     var photoImg = document.createElement('img');
-    photoImg.src = pins[0].offer.photos[j];
+    photoImg.src = obj.offer.photos[i];
     photoImg.width = 45;
+    photoImg.alt = 'Фотография жилья';
+    photoImg.classList.add('popup__photo');
 
     photoFragment.appendChild(photoImg);
   }
+
+  return photoFragment;
+};
+
+/* Возвращает заполненное объявление*/
+var getFillCard = function (obj) {
+  var cardCopy = mapCard.cloneNode(true);
+
+  var cardTitle = cardCopy.querySelector('.popup__title');
+  var cardAddress = cardCopy.querySelector('.popup__text--address');
+  var cardPrise = cardCopy.querySelector('.popup__text--price');
+  var cardCapacity = cardCopy.querySelector('.popup__text--capacity');
+  var cardTime = cardCopy.querySelector('.popup__text--time');
+  var cardDescription = cardCopy.querySelector('.popup__description');
+  var cardAvatar = cardCopy.querySelector('.popup__avatar');
+
+  /* Отрисовывает заголовок, адрес и цену*/
+  cardTitle.textContent = obj.offer.title;
+  cardAddress.textContent = obj.offer.address;
+  cardPrise.textContent = obj.offer.price + '₽/ночь';
+
+  /* Отрисовывает тип жилья*/
+  var typeToHouse = {
+    flat: 'Квартира',
+    bungalo: 'Бунгало',
+    house: 'Дом',
+    palace: 'Дворец'
+  };
+  var popupType = cardCopy.querySelector('.popup__type');
+  popupType.textContent = typeToHouse[obj.offer.type];
+
+  /* Отрисовывает количество комнат и гостей*/
+  cardCapacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
+
+  /* Отрисовывает время заезда и выезда*/
+  cardTime.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
+
+  /* Отрисовывает список удобств*/
+  var featuresList = cardCopy.querySelector('.popup__features');
+  featuresList.innerHTML = '';
+  featuresList.appendChild(getFillFeature(obj));
+
+  /* Отрисовывает описание*/
+  cardDescription.textContent = obj.offer.description;
+
+  /* Отрисовывает фото жилья*/
   var photos = cardCopy.querySelector('.popup__photos');
   photos.innerHTML = '';
-  photos.appendChild(photoFragment);
+  photos.appendChild(getFillPhoto(obj));
 
   /* Отрисовывает аватарку*/
-  cardCopy.querySelector('.popup__avatar').src = pins[0].author.avatar;
+  cardAvatar.src = obj.author.avatar;
 
   return cardCopy;
 };
@@ -205,7 +223,7 @@ var getFillCard = function () {
 /* Отрисовывает объявление*/
 var renderCard = function () {
   var fragment = document.createDocumentFragment();
-  fragment.appendChild(getFillCard());
+  fragment.appendChild(getFillCard(pins[0]));
   map.appendChild(fragment);
 };
 renderCard();
