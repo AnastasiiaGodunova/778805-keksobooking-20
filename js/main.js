@@ -158,7 +158,7 @@ var getFillFeature = function (arr, block) {
     featureFragment.appendChild(featureItem);
   }
 
-  return featureFragment;
+  block.appendChild(featureFragment);
 };
 
 /* Возвращает список фото жилья*/
@@ -177,7 +177,7 @@ var getFillPhoto = function (arr, block) {
     photoFragment.appendChild(photoImg);
   }
 
-  return photoFragment;
+  block.appendChild(photoFragment);
 };
 
 /* Возвращает заполненное объявление*/
@@ -201,9 +201,9 @@ var getFillCard = function (obj) {
   type.textContent = typeToHouse[obj.offer.type];
   capacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
   time.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
-  featuresList.appendChild(getFillFeature(obj.offer.features, featuresList));
+  getFillFeature(obj.offer.features, featuresList);
   description.textContent = obj.offer.description;
-  photos.appendChild(getFillPhoto(obj.offer.photos, photos));
+  getFillPhoto(obj.offer.photos, photos);
   avatar.src = obj.author.avatar;
 
   return cardCopy;
