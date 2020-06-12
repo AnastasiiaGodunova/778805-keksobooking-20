@@ -53,6 +53,24 @@ var typeToHouse = {
   house: 'Дом',
   palace: 'Дворец'
 };
+var mapPinMain = mapPinsBlock.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var addressInput = adForm.querySelector('input[name=address]');
+var typeSelect = adForm.querySelector('select[name=type]');
+var priceInput = adForm.querySelector('input[name=price]');
+var timeIn = adForm.querySelector('select[name=timein]');
+var timeOut = adForm.querySelector('select[name=timeout]');
+var roomsSelect = adForm.querySelector('select[name=rooms]');
+var capacitySelect = adForm.querySelector('select[name=capacity]');
+var formSubmit = adForm.querySelector('.ad-form__submit');
+var formReset = adForm.querySelector('.ad-form__reset');
+var main = document.querySelector('main');
+var successMessage = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+var errorMessage = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 /* Удаляет класс*/
 var removeClass = function (elem, elemClass) {
@@ -118,8 +136,6 @@ var getRandomPins = function () {
   return pinsList;
 };
 
-removeClass(map, 'map--faded');
-
 var pins = getRandomPins();
 
 /* Возвращает заполнунную метку*/
@@ -144,7 +160,160 @@ var renderPins = function () {
   }
   mapPinsBlock.appendChild(fragment);
 };
-renderPins();
+
+/* Блокирует форму*/
+var disabledForm = function () {
+  var adFormElements = adForm.querySelectorAll('.ad-form__element');
+  if (adForm.classList.contains('ad-form--disabled')) {
+    for (var i = 0; i < adFormElements.length; i++) {
+      adFormElements[i].disabled = true;
+    }
+  } else {
+    for (var j = 0; j < adFormElements.length; j++) {
+      adFormElements[j].disabled = false;
+    }
+  }
+};
+disabledForm();
+
+/* Активное состояние страницы*/
+var activationPage = function () {
+  removeClass(map, 'map--faded');
+  removeClass(adForm, 'ad-form--disabled');
+
+  renderPins();
+  disabledForm();
+
+  addressInput.value = mapPinMain.style.left + ' ' + mapPinMain.style.top;
+};
+
+mapPinMain.addEventListener('mousedown', function (evt) {
+  if (evt.which === 1) {
+    evt.preventDefault();
+    activationPage();
+  }
+});
+
+mapPinMain.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    activationPage();
+  }
+});
+
+/* Возвращает страницу в неактивное состояние*/
+var deactivationPage = function () {
+  var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  adForm.reset();
+  disabledForm();
+  for (var i = 0; i < mapPins.length; i++) {
+    if (!mapPins[i].classList.contains('map__pin--main')) {
+      mapPins[i].remove();
+    }
+  }
+};
+
+formReset.addEventListener('click', function (evt) {
+  if (evt.which === 1) {
+    evt.preventDefault();
+    deactivationPage();
+  }
+});
+
+formReset.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    deactivationPage();
+  }
+});
+
+/* Копирует шаблон сообщения об успешной отправке формы*/
+var getSuccessMessage = function () {
+  var successCopy = successMessage.cloneNode(true);
+
+  return successCopy;
+};
+
+/* Отрисовывает сообщение об успешной отправке формы*/
+var renderSuccessMessage = function () {
+  var successFragment = document.createDocumentFragment();
+  successFragment.appendChild(getSuccessMessage());
+  main.appendChild(successFragment);
+};
+
+/* Открытие и закрытие сообщения об отправке формы*/
+var closeSuccessMessage = function (evt) {
+  var mainSuccessMessage = main.querySelector('.success');
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    mainSuccessMessage.remove();
+  }
+};
+
+var openSuccessMessage = function () {
+  renderSuccessMessage();
+
+  document.addEventListener('keydown', closeSuccessMessage);
+};
+
+formSubmit.addEventListener('click', function (evt) {
+  if (evt.which === 1) {
+    evt.preventDefault();
+    openSuccessMessage();
+  }
+});
+
+formSubmit.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    openSuccessMessage();
+  }
+});
+
+/* Копирует шаблон сообщения об ошибке при отправке формы*/
+var getErrorMessage = function () {
+  var errorCopy = errorMessage.cloneNode(true);
+
+  return errorCopy;
+};
+
+/* Отрисовывает сообщение об ошибке при отправке формы*/
+var renderErrorMessage = function () {
+  var errorFragment = document.createDocumentFragment();
+  errorFragment.appendChild(getErrorMessage());
+  main.appendChild(errorFragment);
+};
+
+/* Открытие и закрытие сообщения об отправке формы*/
+var closeErrorMessage = function (evt) {
+  var mainErrorMessage = main.querySelector('.error');
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    mainErrorMessage.remove();
+  }
+};
+
+var openErrorMessage = function () {
+  renderErrorMessage();
+
+  document.addEventListener('keydown', closeErrorMessage);
+};
+
+formSubmit.addEventListener('click', function (evt) {
+  if (evt.which === 1) {
+    evt.preventDefault();
+    openErrorMessage();
+  }
+});
+
+formSubmit.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    openErrorMessage();
+  }
+});
 
 /* Возвращает список удобств*/
 var getFillFeature = function (arr, block) {
@@ -210,9 +379,50 @@ var getFillCard = function (obj) {
 };
 
 /* Отрисовывает объявление*/
-var renderCard = function () {
+/* var renderCard = function () {
   var fragment = document.createDocumentFragment();
   fragment.appendChild(getFillCard(pins[0]));
   map.appendChild(fragment);
 };
-renderCard();
+renderCard();*/
+
+/* Меняет минимальную цену в зависимости от типа жилья*/
+typeSelect.addEventListener('change', function () {
+  if (typeSelect.value === 'bungalo') {
+    priceInput.min = '0';
+    priceInput.placeholder = '0';
+  } else if (typeSelect.value === 'flat') {
+    priceInput.min = '1000';
+    priceInput.placeholder = '1000';
+  } else if (typeSelect.value === 'house') {
+    priceInput.min = '5000';
+    priceInput.placeholder = '5000';
+  } else if (typeSelect.value === 'palace') {
+    priceInput.min = '10000';
+    priceInput.placeholder = '10000';
+  }
+});
+
+addressInput.value = mapPinMain.style.left + ' ' + mapPinMain.style.top;
+
+/* Синхронизирует значение 2ух элементов*/
+var syncInputs = function (firstElem, secondElem) {
+  secondElem.value = firstElem.value;
+};
+
+timeIn.addEventListener('change', function () {
+  syncInputs(timeIn, timeOut);
+});
+
+timeOut.addEventListener('change', function () {
+  syncInputs(timeOut, timeIn);
+});
+
+roomsSelect.addEventListener('change', function () {
+  var capacitySelectOptions = capacitySelect.options;
+  for (var i = 0; i < capacitySelectOptions.length; i++) {
+    if (roomsSelect.value < capacitySelectOptions[i].value) {
+      capacitySelectOptions[i].disabled = true;
+    }
+  }
+});
