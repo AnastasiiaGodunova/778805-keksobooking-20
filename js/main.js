@@ -53,8 +53,15 @@ var typeToHouse = {
   house: 'Дом',
   palace: 'Дворец'
 };
+var roomsGuestsDependencies = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0']
+};
 var mapPinMain = mapPinsBlock.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
+var adFormElements = adForm.querySelectorAll('.ad-form__element');
 var addressInput = adForm.querySelector('input[name=address]');
 var typeSelect = adForm.querySelector('select[name=type]');
 var priceInput = adForm.querySelector('input[name=price]');
@@ -62,15 +69,7 @@ var timeIn = adForm.querySelector('select[name=timein]');
 var timeOut = adForm.querySelector('select[name=timeout]');
 var roomsSelect = adForm.querySelector('select[name=rooms]');
 var capacitySelect = adForm.querySelector('select[name=capacity]');
-var formSubmit = adForm.querySelector('.ad-form__submit');
 var formReset = adForm.querySelector('.ad-form__reset');
-var main = document.querySelector('main');
-var successMessage = document.querySelector('#success')
-  .content
-  .querySelector('.success');
-var errorMessage = document.querySelector('#error')
-  .content
-  .querySelector('.error');
 
 /* Удаляет класс*/
 var removeClass = function (elem, elemClass) {
@@ -162,19 +161,12 @@ var renderPins = function () {
 };
 
 /* Блокирует форму*/
-var disabledForm = function () {
-  var adFormElements = adForm.querySelectorAll('.ad-form__element');
-  if (adForm.classList.contains('ad-form--disabled')) {
-    for (var i = 0; i < adFormElements.length; i++) {
-      adFormElements[i].disabled = true;
-    }
-  } else {
-    for (var j = 0; j < adFormElements.length; j++) {
-      adFormElements[j].disabled = false;
-    }
+var setDisabled = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    arr[i].disabled = !arr[i].disabled;
   }
 };
-disabledForm();
+setDisabled(adFormElements);
 
 /* Активное состояние страницы*/
 var activationPage = function () {
@@ -182,13 +174,13 @@ var activationPage = function () {
   removeClass(adForm, 'ad-form--disabled');
 
   renderPins();
-  disabledForm();
+  setDisabled(adFormElements);
 
   addressInput.value = mapPinMain.style.left + ' ' + mapPinMain.style.top;
 };
 
 mapPinMain.addEventListener('mousedown', function (evt) {
-  if (evt.which === 1) {
+  if (evt.button === 0) {
     evt.preventDefault();
     activationPage();
   }
@@ -201,13 +193,9 @@ mapPinMain.addEventListener('keydown', function (evt) {
   }
 });
 
-/* Возвращает страницу в неактивное состояние*/
-var deactivationPage = function () {
+/* Удаляет метки*/
+var removePins = function () {
   var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
-  map.classList.add('map--faded');
-  adForm.classList.add('ad-form--disabled');
-  adForm.reset();
-  disabledForm();
   for (var i = 0; i < mapPins.length; i++) {
     if (!mapPins[i].classList.contains('map__pin--main')) {
       mapPins[i].remove();
@@ -215,103 +203,19 @@ var deactivationPage = function () {
   }
 };
 
+/* Возвращает страницу в неактивное состояние*/
+var deactivationPage = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  adForm.reset();
+  setDisabled(adFormElements);
+  removePins();
+};
+
 formReset.addEventListener('click', function (evt) {
-  if (evt.which === 1) {
+  if (evt.button === 0) {
     evt.preventDefault();
     deactivationPage();
-  }
-});
-
-formReset.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    evt.preventDefault();
-    deactivationPage();
-  }
-});
-
-/* Копирует шаблон сообщения об успешной отправке формы*/
-var getSuccessMessage = function () {
-  var successCopy = successMessage.cloneNode(true);
-
-  return successCopy;
-};
-
-/* Отрисовывает сообщение об успешной отправке формы*/
-var renderSuccessMessage = function () {
-  var successFragment = document.createDocumentFragment();
-  successFragment.appendChild(getSuccessMessage());
-  main.appendChild(successFragment);
-};
-
-/* Открытие и закрытие сообщения об отправке формы*/
-var closeSuccessMessage = function (evt) {
-  var mainSuccessMessage = main.querySelector('.success');
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    mainSuccessMessage.remove();
-  }
-};
-
-var openSuccessMessage = function () {
-  renderSuccessMessage();
-
-  document.addEventListener('keydown', closeSuccessMessage);
-};
-
-formSubmit.addEventListener('click', function (evt) {
-  if (evt.which === 1) {
-    evt.preventDefault();
-    openSuccessMessage();
-  }
-});
-
-formSubmit.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    evt.preventDefault();
-    openSuccessMessage();
-  }
-});
-
-/* Копирует шаблон сообщения об ошибке при отправке формы*/
-var getErrorMessage = function () {
-  var errorCopy = errorMessage.cloneNode(true);
-
-  return errorCopy;
-};
-
-/* Отрисовывает сообщение об ошибке при отправке формы*/
-var renderErrorMessage = function () {
-  var errorFragment = document.createDocumentFragment();
-  errorFragment.appendChild(getErrorMessage());
-  main.appendChild(errorFragment);
-};
-
-/* Открытие и закрытие сообщения об отправке формы*/
-var closeErrorMessage = function (evt) {
-  var mainErrorMessage = main.querySelector('.error');
-  if (evt.key === 'Escape') {
-    evt.preventDefault();
-    mainErrorMessage.remove();
-  }
-};
-
-var openErrorMessage = function () {
-  renderErrorMessage();
-
-  document.addEventListener('keydown', closeErrorMessage);
-};
-
-formSubmit.addEventListener('click', function (evt) {
-  if (evt.which === 1) {
-    evt.preventDefault();
-    openErrorMessage();
-  }
-});
-
-formSubmit.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    evt.preventDefault();
-    openErrorMessage();
   }
 });
 
