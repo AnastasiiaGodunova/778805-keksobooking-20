@@ -169,25 +169,13 @@ var renderPins = function () {
   mapPinsBlock.appendChild(fragment);
 };
 
-/* Возвращает центр элемента*/
-var getElementCenter = function (obj) {
-  var posX = Math.round(obj.offsetLeft - obj.offsetWidth / 2);
-  var posY = Math.round(obj.offsetTop - obj.offsetHeight / 2);
-  return posX + ', ' + posY;
+/* Возвращает адрес метки*/
+var getAddressPin = function (obj, y) {
+  var posX = Math.round(obj.offsetLeft + obj.offsetWidth / 2);
+  var posY = Math.round(obj.offsetTop + obj.offsetHeight / y);
+  addressInput.value = posX + ', ' + posY;
 };
-
-/* Возвращает центральную нижнюю точку элемента*/
-var getElementCenterAndBottom = function (obj) {
-  var posX = Math.round(obj.offsetLeft - obj.offsetWidth / 2);
-  var posY = Math.round(obj.offsetTop - obj.offsetHeight);
-  return posX + ', ' + posY;
-};
-
-/* Заполняет строку адреса*/
-var fillAddressInput = function (func) {
-  addressInput.value = func;
-};
-fillAddressInput(getElementCenter(mapPinMain));
+getAddressPin(mapPinMain, 2);
 
 /* Блокирует форму*/
 var setDisabled = function (arr) {
@@ -205,7 +193,7 @@ var activationPage = function () {
   renderPins();
   setDisabled(adFormElements);
 
-  fillAddressInput(getElementCenterAndBottom(mapPinMain));
+  getAddressPin(mapPinMain, 1);
 };
 
 mapPinMain.addEventListener('mousedown', function (evt) {
@@ -239,14 +227,12 @@ var deactivationPage = function () {
   adForm.reset();
   setDisabled(adFormElements);
   removePins();
-  fillAddressInput(getElementCenter(mapPinMain));
+  getAddressPin(mapPinMain, 2);
 };
 
 formReset.addEventListener('click', function (evt) {
-  if (evt.button === LEFT_BTN_KEY) {
-    evt.preventDefault();
-    deactivationPage();
-  }
+  evt.preventDefault();
+  deactivationPage();
 });
 
 /* Возвращает список удобств*/
@@ -320,14 +306,26 @@ formReset.addEventListener('click', function (evt) {
 };
 renderCard();*/
 
+/* Кастомные сообщения*/
+var castomMessage = function (elem) {
+  if (elem.validity.valueMissing) {
+    elem.setCustomValidity('Обязательное поле');
+  } else {
+    elem.setCustomValidity('');
+  }
+};
+
 /* Выводит кастомные сообщения в поле заголовка*/
 titleInput.addEventListener('invalid', function () {
+  castomMessage(titleInput);
+});
+
+titleInput.addEventListener('input', function () {
   if (titleInput.validity.tooShort) {
-    titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
+    titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов, сейчас '
+    + titleInput.value.length + ' символов');
   } else if (titleInput.validity.tooLong) {
     titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
-  } else if (titleInput.validity.valueMissing) {
-    titleInput.setCustomValidity('Обязательное поле');
   } else {
     titleInput.setCustomValidity('');
   }
@@ -342,14 +340,11 @@ typeSelect.addEventListener('change', function () {
 
 /* Выводит кастомные сообщения в поле цены*/
 priceInput.addEventListener('invalid', function () {
+  castomMessage(priceInput);
   if (priceInput.validity.rangeUnderflow) {
     priceInput.setCustomValidity('Минимальная цена должна быть ' + priceInput.min);
   } else if (priceInput.validity.rangeOverflow) {
     priceInput.setCustomValidity('Максимальная цена ' + priceInput.max);
-  } else if (priceInput.validity.valueMissing) {
-    priceInput.setCustomValidity('Обязательное поле');
-  } else {
-    priceInput.setCustomValidity('');
   }
 });
 
@@ -371,7 +366,7 @@ var roomsAndCapacityDependence = function () {
   var capacitySelectOptions = capacitySelect.options;
   for (var i = 0; i < capacitySelectOptions.length; i++) {
     capacitySelectOptions[i].disabled = !roomsGuestsDependencies[roomsSelect.value].includes(capacitySelectOptions[i].value);
-    capacitySelectOptions[i].selected = roomsGuestsDependencies[roomsSelect.value].includes(capacitySelectOptions[i].value);
+    capacitySelectOptions[i].selected = !capacitySelectOptions[i].disabled;
   }
 };
 roomsAndCapacityDependence();
