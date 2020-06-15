@@ -306,29 +306,27 @@ formReset.addEventListener('click', function (evt) {
 };
 renderCard();*/
 
-/* Кастомные сообщения*/
-var castomMessage = function (elem) {
-  if (elem.validity.valueMissing) {
-    elem.setCustomValidity('Обязательное поле');
-  } else {
-    elem.setCustomValidity('');
-  }
-};
-
-/* Выводит кастомные сообщения в поле заголовка*/
-titleInput.addEventListener('invalid', function () {
-  castomMessage(titleInput);
-});
-
-titleInput.addEventListener('input', function () {
+/* Кастомные сообщения для заголовка*/
+var castomMessageTitle = function () {
   if (titleInput.validity.tooShort) {
     titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов, сейчас '
     + titleInput.value.length + ' символов');
   } else if (titleInput.validity.tooLong) {
     titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
   } else {
     titleInput.setCustomValidity('');
   }
+};
+
+/* Выводит кастомные сообщения в поле заголовка*/
+titleInput.addEventListener('invalid', function () {
+  castomMessageTitle();
+});
+
+titleInput.addEventListener('input', function () {
+  castomMessageTitle();
 });
 
 /* Меняет минимальную цену в зависимости от типа жилья*/
@@ -340,11 +338,14 @@ typeSelect.addEventListener('change', function () {
 
 /* Выводит кастомные сообщения в поле цены*/
 priceInput.addEventListener('invalid', function () {
-  castomMessage(priceInput);
   if (priceInput.validity.rangeUnderflow) {
     priceInput.setCustomValidity('Минимальная цена должна быть ' + priceInput.min);
   } else if (priceInput.validity.rangeOverflow) {
     priceInput.setCustomValidity('Максимальная цена ' + priceInput.max);
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
   }
 });
 
