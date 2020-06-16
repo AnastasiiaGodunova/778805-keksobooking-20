@@ -1,6 +1,7 @@
 'use strict';
 
 /* (function () {
+  var map = document.querySelector('.map');
   var mapCard = document.querySelector('#card')
     .content
     .querySelector('.map__card');
@@ -78,7 +79,7 @@
   /* var renderCard = function () {
     var fragment = document.createDocumentFragment();
     fragment.appendChild(getFillCard(pins[0]));
-    window.map.appendChild(fragment);
+    map.appendChild(fragment);
   };
   renderCard();
 })();*/

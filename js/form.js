@@ -1,27 +1,7 @@
 'use strict';
 
 (function () {
-  window.form = {
-    adForm: document.querySelector('.ad-form'),
-    mapPinsBlock: document.querySelector('.map__pins'),
-
-    /* Блокирует форму*/
-    setDisabled: function (arr) {
-      for (var i = 0; i < arr.length; i++) {
-        arr[i].disabled = !arr[i].disabled;
-      }
-    },
-    /* Возвращает адрес метки*/
-    getAddressPin: function (obj, y) {
-      var posX = Math.round(obj.offsetLeft + obj.offsetWidth / 2);
-      var posY = Math.round(obj.offsetTop + obj.offsetHeight / y);
-      addressInput.value = posX + ', ' + posY;
-    },
-  };
-
-  window.adFormElements = window.form.adForm.querySelectorAll('.ad-form__element');
-  window.mapPinMain = window.form.mapPinsBlock.querySelector('.map__pin--main');
-
+  var adForm = document.querySelector('.ad-form');
   var priceOfType = {
     bungalo: 0,
     flat: 1000,
@@ -35,17 +15,13 @@
     100: ['0']
   };
 
-  var titleInput = window.form.adForm.querySelector('input[name=title]');
-  var addressInput = window.form.adForm.querySelector('input[name=address]');
-  var typeSelect = window.form.adForm.querySelector('select[name=type]');
-  var priceInput = window.form.adForm.querySelector('input[name=price]');
-  var timeIn = window.form.adForm.querySelector('select[name=timein]');
-  var timeOut = window.form.adForm.querySelector('select[name=timeout]');
-  var roomsSelect = window.form.adForm.querySelector('select[name=rooms]');
-  var capacitySelect = window.form.adForm.querySelector('select[name=capacity]');
-
-  window.form.setDisabled(window.adFormElements);
-  window.form.getAddressPin(window.mapPinMain, 2);
+  var titleInput = adForm.querySelector('input[name=title]');
+  var typeSelect = adForm.querySelector('select[name=type]');
+  var priceInput = adForm.querySelector('input[name=price]');
+  var timeIn = adForm.querySelector('select[name=timein]');
+  var timeOut = adForm.querySelector('select[name=timeout]');
+  var roomsSelect = adForm.querySelector('select[name=rooms]');
+  var capacitySelect = adForm.querySelector('select[name=capacity]');
 
   /* Кастомные сообщения для заголовка*/
   var getCastomMessageTitle = function () {
@@ -63,11 +39,11 @@
 
   /* Выводит кастомные сообщения в поле заголовка*/
   titleInput.addEventListener('invalid', function () {
-    castomMessageTitle();
+    getCastomMessageTitle();
   });
 
   titleInput.addEventListener('input', function () {
-    castomMessageTitle();
+    getCastomMessageTitle();
   });
 
   /* Меняет минимальную цену в зависимости от типа жилья*/
