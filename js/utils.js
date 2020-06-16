@@ -26,8 +26,8 @@
   };
 
   window.utils = {
-    getRandomInteger,
-    getRandomArrElement,
-    getRandomArray
+    getRandomInteger: getRandomInteger,
+    getRandomArrElement: getRandomArrElement,
+    getRandomArray: getRandomArray
   };
 })();

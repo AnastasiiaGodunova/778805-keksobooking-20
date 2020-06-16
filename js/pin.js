@@ -9,8 +9,6 @@
     .querySelector('.map__pin');
   var mapPinsBlock = document.querySelector('.map__pins');
 
-  var pins = window.data.getRandomPins();
-
   /* Возвращает заполнунную метку*/
   var getFillPin = function (obj) {
     var pinElement = mapPin.cloneNode(true);
@@ -26,13 +24,26 @@
   };
 
   /* Отрисовывает метки*/
-  window.pin = {
-    renderPins: function () {
-      var fragment = document.createDocumentFragment();
-      for (var i = 0; i < pins.length; i++) {
-        fragment.appendChild(getFillPin(pins[i]));
-      }
-      mapPinsBlock.appendChild(fragment);
+  var renderPins = function (arr) {
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < arr.length; i++) {
+      fragment.appendChild(getFillPin(arr[i]));
     }
+    mapPinsBlock.appendChild(fragment);
+  };
+
+  /* Удаляет метки*/
+  var removePins = function () {
+    var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
+    for (var i = 0; i < mapPins.length; i++) {
+      if (!mapPins[i].classList.contains('map__pin--main')) {
+        mapPins[i].remove();
+      }
+    }
+  };
+
+  window.pin = {
+    render: renderPins,
+    remove: removePins
   };
 })();

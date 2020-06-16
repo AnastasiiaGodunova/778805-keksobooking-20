@@ -1,12 +1,8 @@
 'use strict';
 
 (function () {
-  var LEFT_BTN_KEY = 0;
-  var ENTER_KEY = 'Enter';
-
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
-  var mapPinsBlock = map.querySelector('.map__pins');
   var adForm = document.querySelector('.ad-form');
   var adFormElements = adForm.querySelectorAll('.ad-form__element');
   var formReset = adForm.querySelector('.ad-form__reset');
@@ -39,35 +35,25 @@
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.pin.renderPins();
+    window.pin.render(window.data.getRandomPins);
 
     setDisabled(adFormElements);
     getAddressPin(mapPinMain, 1);
   };
 
   mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === LEFT_BTN_KEY) {
+    if (evt.button === window.const.LEFT_BTN_KEY) {
       evt.preventDefault();
       activationPage();
     }
   });
 
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === ENTER_KEY) {
+    if (evt.key === window.const.ENTER_KEY) {
       evt.preventDefault();
       activationPage();
     }
   });
-
-  /* Удаляет метки*/
-  var removePins = function () {
-    var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
-    for (var i = 0; i < mapPins.length; i++) {
-      if (!mapPins[i].classList.contains('map__pin--main')) {
-        mapPins[i].remove();
-      }
-    }
-  };
 
   /* Возвращает страницу в неактивное состояние*/
   var deactivationPage = function () {
@@ -75,7 +61,7 @@
     adForm.classList.add('ad-form--disabled');
     adForm.reset();
     setDisabled(adFormElements);
-    removePins();
+    window.pin.remove();
     getAddressPin(mapPinMain, 2);
   };
 
