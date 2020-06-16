@@ -35,7 +35,7 @@
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.pin.render(window.data.getRandomPins);
+    window.pin.render(window.data);
 
     setDisabled(adFormElements);
     getAddressPin(mapPinMain, 1);

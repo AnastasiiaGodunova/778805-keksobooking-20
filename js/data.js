@@ -72,7 +72,5 @@
     return pinsList;
   };
 
-  window.data = {
-    getRandomPins: getRandomPins()
-  };
+  window.data = getRandomPins();
 })();
