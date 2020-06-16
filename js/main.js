@@ -342,10 +342,10 @@ priceInput.addEventListener('invalid', function () {
     priceInput.setCustomValidity('Минимальная цена должна быть ' + priceInput.min);
   } else if (priceInput.validity.rangeOverflow) {
     priceInput.setCustomValidity('Максимальная цена ' + priceInput.max);
-  } else if (titleInput.validity.valueMissing) {
-    titleInput.setCustomValidity('Обязательное поле');
+  } else if (priceInput.validity.valueMissing) {
+    priceInput.setCustomValidity('Обязательное поле');
   } else {
-    titleInput.setCustomValidity('');
+    priceInput.setCustomValidity('');
   }
 });
 
