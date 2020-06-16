@@ -48,7 +48,7 @@
   window.form.getAddressPin(window.mapPinMain, 2);
 
   /* Кастомные сообщения для заголовка*/
-  var castomMessageTitle = function () {
+  var getCastomMessageTitle = function () {
     if (titleInput.validity.tooShort) {
       titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов, сейчас '
       + titleInput.value.length + ' символов');

@@ -5,6 +5,7 @@
   var ENTER_KEY = 'Enter';
 
   window.map = document.querySelector('.map');
+
   var formReset = window.form.adForm.querySelector('.ad-form__reset');
 
   /* Удаляет класс*/
