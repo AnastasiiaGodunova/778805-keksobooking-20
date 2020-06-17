@@ -20,6 +20,24 @@
     mapPinImg.src = obj.author.avatar;
     mapPinImg.alt = obj.offer.title;
 
+    pinElement.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      window.card.remove();
+      window.card.render(obj);
+
+      var popupClose = document.querySelector('.popup__close');
+
+      popupClose.addEventListener('click', function () {
+        window.card.remove();
+      });
+
+      document.addEventListener('keydown', function () {
+        if (evt.key === window.const.ESCAPE_KEY) {
+          window.card.remove();
+        }
+      });
+    });
+
     return pinElement;
   };
 
@@ -30,6 +48,7 @@
       fragment.appendChild(getFillPin(arr[i]));
     }
     mapPinsBlock.appendChild(fragment);
+
   };
 
   /* Удаляет метки*/
@@ -46,4 +65,5 @@
     render: renderPins,
     remove: removePins
   };
+
 })();
