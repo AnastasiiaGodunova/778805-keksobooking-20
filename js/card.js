@@ -75,15 +75,31 @@
     return cardCopy;
   };
 
+  var onCardEscPress = function (evt) {
+    if (evt.key === window.const.ESCAPE_KEY) {
+      evt.preventDefault();
+      removeCard();
+    }
+  };
+
   /* Отрисовывает объявление*/
   var renderCard = function (arr) {
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(getFillCard(arr));
-    map.appendChild(fragment);
+    map.appendChild(getFillCard(arr));
+
+    var popupClose = document.querySelector('.popup__close');
+
+    popupClose.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      removeCard();
+    });
+
+    document.addEventListener('keydown', onCardEscPress);
   };
 
   /* Удаляет объявление*/
   var removeCard = function () {
+    document.removeEventListener('keydown', onCardEscPress);
+
     var card = map.querySelector('.map__card');
     if (map.contains(card)) {
       map.removeChild(card);

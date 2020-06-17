@@ -24,18 +24,6 @@
       evt.preventDefault();
       window.card.remove();
       window.card.render(obj);
-
-      var popupClose = document.querySelector('.popup__close');
-
-      popupClose.addEventListener('click', function () {
-        window.card.remove();
-      });
-
-      document.addEventListener('keydown', function () {
-        if (evt.key === window.const.ESCAPE_KEY) {
-          window.card.remove();
-        }
-      });
     });
 
     return pinElement;
