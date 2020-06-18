@@ -20,6 +20,12 @@
     mapPinImg.src = obj.author.avatar;
     mapPinImg.alt = obj.offer.title;
 
+    pinElement.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      window.card.remove();
+      window.card.render(obj);
+    });
+
     return pinElement;
   };
 
@@ -30,6 +36,7 @@
       fragment.appendChild(getFillPin(arr[i]));
     }
     mapPinsBlock.appendChild(fragment);
+
   };
 
   /* Удаляет метки*/
@@ -46,4 +53,5 @@
     render: renderPins,
     remove: removePins
   };
+
 })();

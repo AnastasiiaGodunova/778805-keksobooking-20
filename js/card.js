@@ -1,6 +1,6 @@
 'use strict';
 
-/* (function () {
+(function () {
   var map = document.querySelector('.map');
   var mapCard = document.querySelector('#card')
     .content
@@ -10,10 +10,10 @@
     bungalo: 'Бунгало',
     house: 'Дом',
     palace: 'Дворец'
-  };*/
+  };
 
   /* Возвращает список удобств*/
-  /* var getFillFeature = function (arr, block) {
+  var getFillFeature = function (arr, block) {
     var featureFragment = document.createDocumentFragment();
 
     block.innerHTML = '';
@@ -25,10 +25,10 @@
     }
 
     block.appendChild(featureFragment);
-  };*/
+  };
 
   /* Возвращает список фото жилья*/
-  /* var getFillPhoto = function (arr, block) {
+  var getFillPhoto = function (arr, block) {
     var photoFragment = document.createDocumentFragment();
 
     block.innerHTML = '';
@@ -44,10 +44,10 @@
     }
 
     block.appendChild(photoFragment);
-  };*/
+  };
 
   /* Возвращает заполненное объявление*/
-  /* var getFillCard = function (obj) {
+  var getFillCard = function (obj) {
     var cardCopy = mapCard.cloneNode(true);
 
     var title = cardCopy.querySelector('.popup__title');
@@ -73,13 +73,41 @@
     avatar.src = obj.author.avatar;
 
     return cardCopy;
-  };*/
+  };
+
+  var onCardEscPress = function (evt) {
+    if (evt.key === window.const.ESCAPE_KEY) {
+      evt.preventDefault();
+      removeCard();
+    }
+  };
 
   /* Отрисовывает объявление*/
-  /* var renderCard = function () {
-    var fragment = document.createDocumentFragment();
-    fragment.appendChild(getFillCard(pins[0]));
-    map.appendChild(fragment);
+  var renderCard = function (arr) {
+    map.appendChild(getFillCard(arr));
+
+    var popupClose = document.querySelector('.popup__close');
+
+    popupClose.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      removeCard();
+    });
+
+    document.addEventListener('keydown', onCardEscPress);
   };
-  renderCard();
-})();*/
+
+  /* Удаляет объявление*/
+  var removeCard = function () {
+    document.removeEventListener('keydown', onCardEscPress);
+
+    var card = map.querySelector('.map__card');
+    if (map.contains(card)) {
+      map.removeChild(card);
+    }
+  };
+
+  window.card = {
+    render: renderCard,
+    remove: removeCard
+  };
+})();
