@@ -69,4 +69,6 @@
     evt.preventDefault();
     deactivationPage();
   });
+
+  window.getAddressPin = getAddressPin;
 })();
