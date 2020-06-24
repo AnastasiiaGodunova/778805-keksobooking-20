@@ -32,11 +32,10 @@
   /* Отрисовывает метки*/
   var renderPins = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < 8; i++) {
       fragment.appendChild(getFillPin(arr[i]));
     }
     mapPinsBlock.appendChild(fragment);
-
   };
 
   /* Удаляет метки*/
