@@ -47,7 +47,7 @@
         mapPinMain.style.top = mapPinMain.offsetTop - shift.y + 'px';
       }
 
-      window.getAddressPin(mapPinMain, 1);
+      window.map.getAddressPin(mapPinMain, 1);
     };
 
     var onMouseUp = function (upEvt) {

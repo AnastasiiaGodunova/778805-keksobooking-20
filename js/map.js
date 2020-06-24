@@ -35,7 +35,7 @@
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.pin.render(window.data);
+    window.backend.load(window.pin.render);
 
     setDisabled(adFormElements);
     getAddressPin(mapPinMain, 1);
@@ -70,5 +70,7 @@
     deactivationPage();
   });
 
-  window.getAddressPin = getAddressPin;
+  window.map = {
+    getAddressPin: getAddressPin
+  };
 })();
