@@ -3,6 +3,7 @@
 (function () {
   var PIN_HEIGHT = 40;
   var PIN_WIDTH = 40;
+  var MAX_PINS = 8;
 
   var mapPin = document.querySelector('#pin')
     .content
@@ -32,7 +33,9 @@
   /* Отрисовывает метки*/
   var renderPins = function (arr) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < 8; i++) {
+    arr.length = arr.length > MAX_PINS ? MAX_PINS : arr.length;
+
+    for (var i = 0; i < arr.length; i++) {
       fragment.appendChild(getFillPin(arr[i]));
     }
     mapPinsBlock.appendChild(fragment);
