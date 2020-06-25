@@ -93,5 +93,8 @@
     roomsAndCapacityDependence();
   });
 
-  adForm.addEventListener('submit', window.message.renderMessage);
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), window.message.success, window.message.error);
+    evt.preventDefault();
+  });
 })();
