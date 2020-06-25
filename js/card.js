@@ -60,6 +60,7 @@
     var description = cardCopy.querySelector('.popup__description');
     var photos = cardCopy.querySelector('.popup__photos');
     var avatar = cardCopy.querySelector('.popup__avatar');
+    var popupClose = cardCopy.querySelector('.popup__close');
 
     title.textContent = obj.offer.title;
     address.textContent = obj.offer.address;
@@ -71,6 +72,13 @@
     description.textContent = obj.offer.description;
     getFillPhoto(obj.offer.photos, photos);
     avatar.src = obj.author.avatar;
+
+    popupClose.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      removeCard();
+    });
+
+    document.addEventListener('keydown', onCardEscPress);
 
     return cardCopy;
   };
@@ -85,15 +93,6 @@
   /* Отрисовывает объявление*/
   var renderCard = function (arr) {
     map.appendChild(getFillCard(arr));
-
-    var popupClose = document.querySelector('.popup__close');
-
-    popupClose.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      removeCard();
-    });
-
-    document.addEventListener('keydown', onCardEscPress);
   };
 
   /* Удаляет объявление*/
