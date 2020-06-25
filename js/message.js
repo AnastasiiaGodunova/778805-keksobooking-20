@@ -14,25 +14,23 @@
   var getErrorMessage = function (errorText) {
     var errorCopy = errorMessage.cloneNode(true);
     var errorMessageText = errorCopy.querySelector('.error__message');
+    var mainErrorMessage = errorCopy.querySelector('.error');
+    var errorButton = errorCopy.querySelector('.error__button');
+
     errorMessageText.textContent = errorText;
+    errorButton.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      mainErrorMessage.remove();
+    });
 
     return errorCopy;
   };
 
   /* Отрисовывает сообщение об ошибке при отправке формы*/
-  var renderErrorMessage = function () {
-    var errorFragment = document.createDocumentFragment();
-    errorFragment.appendChild(getErrorMessage());
-    main.appendChild(errorFragment);
-    document.addEventListener('click', closeMessage);
-    document.addEventListener('keydown', closeMessage);
-
-    var mainErrorMessage = main.querySelector('.error');
-    var errorButton = main.querySelector('.error__button');
-    errorButton.addEventListener('click', function (evt) {
-      evt.preventDefault();
-      mainErrorMessage.remove();
-    });
+  var renderErrorMessage = function (errorText) {
+    main.appendChild(getErrorMessage(errorText));
+    document.addEventListener('click', onErrorMessageClose);
+    document.addEventListener('keydown', onErrorMessageClose);
   };
 
   /* Копирует шаблон сообщения об успешной отправке формы*/
@@ -45,31 +43,34 @@
   /* Отрисовывает сообщение об успешной отправке формы*/
   var renderSuccessMessage = function (evt) {
     window.backend.save(new FormData(adForm), function () {
-      var successFragment = document.createDocumentFragment();
-      successFragment.appendChild(getSuccessMessage());
-      main.appendChild(successFragment);
+      main.appendChild(getSuccessMessage());
     }, renderErrorMessage);
     evt.preventDefault();
-    document.addEventListener('click', closeMessage);
-    document.addEventListener('keydown', closeMessage);
+    document.addEventListener('click', onSuccesMessageClose);
+    document.addEventListener('keydown', onSuccesMessageClose);
+  };
+
+  var onSuccesMessageClose = function (evt) {
+    var mainSuccessMessage = main.querySelector('.success');
+    if (evt.key === window.const.ESCAPE_KEY || evt.button === window.const.LEFT_BTN_KEY) {
+      evt.preventDefault();
+      mainSuccessMessage.remove();
+      window.map.deactivationPage();
+    }
+    document.removeEventListener('click', onSuccesMessageClose);
   };
 
   /* Открытие и закрытие сообщения об отправке формы*/
-  var closeMessage = function (evt) {
-    var mainSuccessMessage = main.querySelector('.success');
+  var onErrorMessageClose = function (evt) {
     var mainErrorMessage = main.querySelector('.error');
     if (evt.key === window.const.ESCAPE_KEY || evt.button === window.const.LEFT_BTN_KEY) {
       evt.preventDefault();
-      if (mainSuccessMessage) {
-        mainSuccessMessage.remove();
-        window.map.deactivationPage();
-      }
-      if (mainErrorMessage) {
-        mainErrorMessage.remove();
-      }
+      mainErrorMessage.remove();
     }
-    document.removeEventListener('click', closeMessage);
+    document.removeEventListener('click', onErrorMessageClose);
   };
 
-  adForm.addEventListener('submit', renderSuccessMessage);
+  window.message = {
+    renderMessage: renderSuccessMessage
+  };
 })();

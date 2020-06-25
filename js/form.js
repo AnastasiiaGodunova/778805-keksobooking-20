@@ -92,4 +92,6 @@
   roomsSelect.addEventListener('change', function () {
     roomsAndCapacityDependence();
   });
+
+  adForm.addEventListener('submit', window.message.renderMessage);
 })();
