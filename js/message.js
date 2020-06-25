@@ -26,10 +26,7 @@
     main.appendChild(errorFragment);
     document.addEventListener('click', closeMessage);
     document.addEventListener('keydown', closeMessage);
-  };
 
-  /* Открытие и закрытие сообщения об отправке формы*/
-  var closeErrorMessage = function (evt) {
     var mainErrorMessage = main.querySelector('.error');
     var errorButton = main.querySelector('.error__button');
     errorButton.addEventListener('click', function (evt) {

@@ -47,7 +47,7 @@
   var save = function (data, upload, error) {
     var xhr = xhrCreate(upload, error);
 
-    xhr.open('POST', URL +'8');
+    xhr.open('POST', URL);
     xhr.send(data);
   };
 
