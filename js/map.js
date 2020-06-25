@@ -71,6 +71,7 @@
   });
 
   window.map = {
-    getAddressPin: getAddressPin
+    getAddressPin: getAddressPin,
+    deactivationPage: deactivationPage
   };
 })();

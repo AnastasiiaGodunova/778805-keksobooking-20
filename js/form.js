@@ -92,4 +92,74 @@
   roomsSelect.addEventListener('change', function () {
     roomsAndCapacityDependence();
   });
+
+  var main = document.querySelector('main');
+  var successMessage = document.querySelector('#success')
+    .content
+    .querySelector('.success');
+  var errorMessage = document.querySelector('#error')
+    .content
+    .querySelector('.error');
+  var mainErrorMessage = main.querySelector('.error');
+  var errorButton = mainErrorMessage.querySelector('.error__button');
+
+  /* Копирует шаблон сообщения об успешной отправке формы*/
+  var getSuccessMessage = function () {
+    var successCopy = successMessage.cloneNode(true);
+
+    return successCopy;
+  };
+
+  /* Отрисовывает сообщение об успешной отправке формы*/
+  var renderSuccessMessage = function (evt) {
+    window.backend.save(new FormData(adForm), function () {
+      var successFragment = document.createDocumentFragment();
+      successFragment.appendChild(getSuccessMessage());
+      main.appendChild(successFragment);
+    });
+    evt.preventDefault();
+    window.map.deactivationPage();
+    document.addEventListener('click', closeSuccessMessage, closeErrorMessage);
+  };
+
+  /* Открытие и закрытие сообщения об отправке формы*/
+  var closeSuccessMessage = function (evt) {
+    var mainSuccessMessage = main.querySelector('.success');
+    if (evt.key === 'Escape' || evt.button === window.const.LEFT_BTN_KEY) {
+      evt.preventDefault();
+      mainSuccessMessage.remove();
+    }
+    document.removeEventListener('click', closeSuccessMessage, closeErrorMessage);
+  };
+
+  /* Копирует шаблон сообщения об ошибке при отправке формы*/
+  var getErrorMessage = function () {
+    var errorCopy = errorMessage.cloneNode(true);
+
+    return errorCopy;
+  };
+
+  /* Отрисовывает сообщение об ошибке при отправке формы*/
+  var renderErrorMessage = function (evt) {
+    var errorFragment = document.createDocumentFragment();
+    errorFragment.appendChild(getErrorMessage());
+    main.appendChild(errorFragment);
+    evt.preventDefault();
+  };
+
+  /* Открытие и закрытие сообщения об отправке формы*/
+  var closeErrorMessage = function (evt) {
+    if (evt.key === 'Escape' || evt.button === window.const.LEFT_BTN_KEY) {
+      evt.preventDefault();
+      mainErrorMessage.remove();
+    }
+  };
+
+  errorButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    mainErrorMessage.remove();
+  });
+
+  adForm.addEventListener('submit', renderSuccessMessage, renderErrorMessage);
+  document.addEventListener('keydown', closeSuccessMessage, closeErrorMessage);
 })();
