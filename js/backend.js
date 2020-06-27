@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking/data';
+  var URL = 'https://javascript.pages.academy/keksobooking';
   var StatusCode = {
     OK: 200
   };
@@ -40,11 +40,19 @@
   var load = function (upload, error) {
     var xhr = xhrCreate(upload, error);
 
-    xhr.open('GET', URL);
+    xhr.open('GET', URL + '/data');
     xhr.send();
+  };
+
+  var save = function (data, upload, error) {
+    var xhr = xhrCreate(upload, error);
+
+    xhr.open('POST', URL);
+    xhr.send(data);
   };
 
   window.backend = {
     load: load,
+    save: save
   };
 })();

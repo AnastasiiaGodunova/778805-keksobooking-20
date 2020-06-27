@@ -92,4 +92,14 @@
   roomsSelect.addEventListener('change', function () {
     roomsAndCapacityDependence();
   });
+
+  var succesSendForm = function () {
+    window.message.success();
+    window.map.deactivationPage();
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(adForm), succesSendForm, window.message.error);
+    evt.preventDefault();
+  });
 })();

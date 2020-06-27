@@ -55,5 +55,4 @@
     render: renderPins,
     remove: removePins
   };
-
 })();
