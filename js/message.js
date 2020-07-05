@@ -16,8 +16,8 @@
 
     errorMessageText.textContent = errorText;
 
-    errorButton.addEventListener('click', onErrorClick);
-    errorCopy.addEventListener('click', onErrorClick);
+    errorButton.addEventListener('click', errorClick);
+    errorCopy.addEventListener('click', errorClick);
     document.addEventListener('keydown', onErrorEscPress);
 
     main.appendChild(errorCopy);
@@ -26,33 +26,35 @@
   var renderSuccess = function () {
     var successCopy = successMessage.cloneNode(true);
 
-    successCopy.addEventListener('click', onSuccesClick);
+    successCopy.addEventListener('click', successClick);
     document.addEventListener('keydown', onSuccesEscPress);
 
     main.appendChild(successCopy);
   };
 
-  var onSuccesClick = function (evt) {
+  var successClick = function () {
     var mainSuccessMessage = main.querySelector('.success');
-    evt.preventDefault();
     mainSuccessMessage.remove();
   };
 
   var onSuccesEscPress = function (evt) {
     if (evt.key === window.const.ESCAPE_KEY) {
-      onSuccesClick(evt);
+      var mainSuccessMessage = main.querySelector('.success');
+      evt.preventDefault();
+      mainSuccessMessage.remove();
     }
   };
 
-  var onErrorClick = function (evt) {
+  var errorClick = function () {
     var mainErrorMessage = main.querySelector('.error');
-    evt.preventDefault();
     mainErrorMessage.remove();
   };
 
   var onErrorEscPress = function (evt) {
     if (evt.key === window.const.ESCAPE_KEY) {
-      onErrorClick(evt);
+      var mainErrorMessage = main.querySelector('.error');
+      evt.preventDefault();
+      mainErrorMessage.remove();
     }
   };
 
