@@ -1,32 +1,33 @@
 'use strict';
 
 (function () {
-  var allFilters = document.querySelectorAll('.map__filter');
-  var typeFilter = document.querySelector('#housing-type');
-  var pins = [];
-
-  var filterType = function (arr, value) {
+  var filterType = function (arr, value, type) {
     return arr.filter(function (it) {
       return it.offer[type].toString() === value;
     });
   };
 
-  var updatePins = function () {
-    var checkedFilters = Array.from(allFilters).filter(function (filter) {
+  var updatePins = function (data) {
+    var allFilters = document.querySelectorAll('.map__filter');
+
+    allFilters = Array.from(allFilters).filter(function (filter) {
       return filter.value !== 'any';
     });
 
-    window.pin.render(pins.sort(function () {
-      checkedFilters.forEach(function (item) {
-        pins = filterValue(pins, item.value);
-      });
-    }));
+    var copyData = data.slice();
 
-    return pins;
+    allFilters.forEach(function (filter) {
+      switch (filter.id) {
+        case 'housing-type':
+          copyData = filterType(copyData, filter.value, 'type');
+          break;
+      }
+    });
+
+    return copyData;
   };
 
-  typeFilter.addEventListener('change', function () {
-    updatePins();
-  });
-
+  window.filter = {
+    update: updatePins
+  };
 })();
