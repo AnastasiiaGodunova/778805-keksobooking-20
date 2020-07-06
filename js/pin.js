@@ -3,7 +3,7 @@
 (function () {
   var PIN_HEIGHT = 40;
   var PIN_WIDTH = 40;
-  var MAX_PINS = 8;
+  var MAX_PINS = 5;
 
   var mapPin = document.querySelector('#pin')
     .content

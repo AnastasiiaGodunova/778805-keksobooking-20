@@ -93,13 +93,13 @@
     roomsAndCapacityDependence();
   });
 
-  var succesSendForm = function () {
+  var sendSuccessForm = function () {
     window.message.success();
     window.map.deactivationPage();
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(adForm), succesSendForm, window.message.error);
+    window.backend.save(new FormData(adForm), sendSuccessForm, window.message.error);
     evt.preventDefault();
   });
 })();

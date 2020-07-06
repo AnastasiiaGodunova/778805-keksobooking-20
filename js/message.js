@@ -26,33 +26,41 @@
   var renderSuccess = function () {
     var successCopy = successMessage.cloneNode(true);
 
-    successCopy.addEventListener('click', onSuccesClick);
+    successCopy.addEventListener('click', onSuccessClick);
     document.addEventListener('keydown', onSuccesEscPress);
 
     main.appendChild(successCopy);
   };
 
-  var onSuccesClick = function (evt) {
+  var closeSuccess = function () {
     var mainSuccessMessage = main.querySelector('.success');
-    evt.preventDefault();
     mainSuccessMessage.remove();
+  };
+
+  var onSuccessClick = function () {
+    closeSuccess();
   };
 
   var onSuccesEscPress = function (evt) {
     if (evt.key === window.const.ESCAPE_KEY) {
-      onSuccesClick(evt);
+      evt.preventDefault();
+      closeSuccess();
     }
   };
 
-  var onErrorClick = function (evt) {
+  var closeError = function () {
     var mainErrorMessage = main.querySelector('.error');
-    evt.preventDefault();
     mainErrorMessage.remove();
+  };
+
+  var onErrorClick = function () {
+    closeError();
   };
 
   var onErrorEscPress = function (evt) {
     if (evt.key === window.const.ESCAPE_KEY) {
-      onErrorClick(evt);
+      evt.preventDefault();
+      closeError();
     }
   };
 
