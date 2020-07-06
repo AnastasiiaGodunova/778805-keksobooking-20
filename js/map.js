@@ -35,7 +35,7 @@
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.data.default(window.pin.render);
+    window.data.default();
 
     setDisabled(adFormElements);
     setDisabled(filtersElements);
@@ -45,14 +45,14 @@
   };
 
   mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === window.const.LEFT_BTN_KEY && isActive === false) {
+    if (evt.button === window.const.LEFT_BTN_KEY && !isActive) {
       evt.preventDefault();
       activationPage();
     }
   });
 
   mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === window.const.ENTER_KEY && isActive === false) {
+    if (evt.key === window.const.ENTER_KEY && !isActive) {
       evt.preventDefault();
       activationPage();
     }
