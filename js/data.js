@@ -12,11 +12,11 @@
     window.backend.load(successHandler, window.message.error);
   };
 
-  var updateAdverts = function () {
+  var updateAdverts = window.debounce(function () {
     window.pin.remove();
     window.card.remove();
     window.pin.render(window.filter.update(adverts));
-  };
+  });
 
   window.data = {
     update: updateAdverts,

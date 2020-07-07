@@ -30,12 +30,20 @@
     });
   };
 
+  var filterFeatures = function (arr, value) {
+    return arr.filter(function (it) {
+      return it.offer.features.includes(value);
+    });
+  };
+
   var updatePins = function (data) {
     var allFilters = document.querySelectorAll('.map__filter');
 
     allFilters = Array.from(allFilters).filter(function (filter) {
       return filter.value !== 'any';
     });
+
+    var featuresCheckbox = document.querySelectorAll('.map__checkbox:checked');
 
     var copyData = data.slice();
 
@@ -54,6 +62,10 @@
           copyData = filterPrice(copyData, filter.value);
           break;
       }
+    });
+
+    featuresCheckbox.forEach(function (filter) {
+      copyData = filterFeatures(copyData, filter.value);
     });
 
     return copyData;
