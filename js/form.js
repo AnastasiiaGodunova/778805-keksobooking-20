@@ -23,7 +23,6 @@
   var roomsSelect = adForm.querySelector('select[name=rooms]');
   var capacitySelect = adForm.querySelector('select[name=capacity]');
 
-  /* Кастомные сообщения для заголовка*/
   var getCastomMessageTitle = function () {
     if (titleInput.validity.tooShort) {
       titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов, сейчас '
@@ -37,7 +36,6 @@
     }
   };
 
-  /* Выводит кастомные сообщения в поле заголовка*/
   titleInput.addEventListener('invalid', function () {
     getCastomMessageTitle();
   });
@@ -46,14 +44,12 @@
     getCastomMessageTitle();
   });
 
-  /* Меняет минимальную цену в зависимости от типа жилья*/
   typeSelect.addEventListener('change', function () {
     var value = typeSelect.value;
     priceInput.min = priceOfType[value];
     priceInput.placeholder = priceOfType[value];
   });
 
-  /* Выводит кастомные сообщения в поле цены*/
   priceInput.addEventListener('invalid', function () {
     if (priceInput.validity.rangeUnderflow) {
       priceInput.setCustomValidity('Минимальная цена должна быть ' + priceInput.min);
@@ -66,7 +62,6 @@
     }
   });
 
-  /* Синхронизирует значение 2ух элементов*/
   var syncInputs = function (firstElem, secondElem) {
     secondElem.value = firstElem.value;
   };
@@ -79,7 +74,6 @@
     syncInputs(timeOut, timeIn);
   });
 
-  /* Выбор кол-ва комнат и гостей*/
   var roomsAndCapacityDependence = function () {
     var capacitySelectOptions = capacitySelect.options;
     for (var i = 0; i < capacitySelectOptions.length; i++) {

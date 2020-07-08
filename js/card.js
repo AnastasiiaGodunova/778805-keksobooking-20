@@ -12,8 +12,7 @@
     palace: 'Дворец'
   };
 
-  /* Возвращает список удобств*/
-  var getFillFeature = function (arr, block) {
+  var getFillFeatures = function (arr, block) {
     var featureFragment = document.createDocumentFragment();
 
     block.innerHTML = '';
@@ -27,8 +26,7 @@
     block.appendChild(featureFragment);
   };
 
-  /* Возвращает список фото жилья*/
-  var getFillPhoto = function (arr, block) {
+  var getFillPhotos = function (arr, block) {
     var photoFragment = document.createDocumentFragment();
 
     block.innerHTML = '';
@@ -46,7 +44,6 @@
     block.appendChild(photoFragment);
   };
 
-  /* Возвращает заполненное объявление*/
   var getFillCard = function (obj) {
     var cardCopy = mapCard.cloneNode(true);
 
@@ -68,9 +65,9 @@
     type.textContent = typeToHouse[obj.offer.type];
     capacity.textContent = obj.offer.rooms + ' комнаты для ' + obj.offer.guests + ' гостей';
     time.textContent = 'Заезд после ' + obj.offer.checkin + ', выезд до ' + obj.offer.checkout;
-    getFillFeature(obj.offer.features, featuresList);
+    getFillFeatures(obj.offer.features, featuresList);
     description.textContent = obj.offer.description;
-    getFillPhoto(obj.offer.photos, photos);
+    getFillPhotos(obj.offer.photos, photos);
     avatar.src = obj.author.avatar;
 
     popupClose.addEventListener('click', function (evt) {
@@ -90,12 +87,10 @@
     }
   };
 
-  /* Отрисовывает объявление*/
   var renderCard = function (arr) {
     map.appendChild(getFillCard(arr));
   };
 
-  /* Удаляет объявление*/
   var removeCard = function () {
     document.removeEventListener('keydown', onCardEscPress);
 

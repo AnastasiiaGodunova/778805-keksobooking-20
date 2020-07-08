@@ -10,7 +10,6 @@
     .querySelector('.map__pin');
   var mapPinsBlock = document.querySelector('.map__pins');
 
-  /* Возвращает заполнунную метку*/
   var getFillPin = function (obj) {
     var pinElement = mapPin.cloneNode(true);
     var mapPinImg = pinElement.querySelector('img');
@@ -30,7 +29,6 @@
     return pinElement;
   };
 
-  /* Отрисовывает метки*/
   var renderPins = function (arr) {
     var fragment = document.createDocumentFragment();
     arr.length = arr.length > MAX_PINS ? MAX_PINS : arr.length;
@@ -41,7 +39,6 @@
     mapPinsBlock.appendChild(fragment);
   };
 
-  /* Удаляет метки*/
   var removePins = function () {
     var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
     for (var i = 0; i < mapPins.length; i++) {
