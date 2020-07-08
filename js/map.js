@@ -77,9 +77,9 @@
     deactivationPage();
   });
 
-  filtersForm.addEventListener('change', function () {
+  filtersForm.addEventListener('change', window.debounce(function () {
     window.data.update();
-  });
+  }));
 
   window.map = {
     getAddressPin: getAddressPin,
