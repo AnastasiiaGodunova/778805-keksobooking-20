@@ -10,6 +10,7 @@
   var formReset = adForm.querySelector('.ad-form__reset');
   var addressInput = adForm.querySelector('input[name=address]');
   var isActive = false;
+  var onFilterChange = window.debounce(window.data.update);
 
   var removeClass = function (elem, elemClass) {
     elem.classList.remove(elemClass);
@@ -77,9 +78,7 @@
     deactivationPage();
   });
 
-  filtersForm.addEventListener('change', window.debounce(function () {
-    window.data.update();
-  }));
+  filtersForm.addEventListener('change', onFilterChange);
 
   window.map = {
     getAddressPin: getAddressPin,
