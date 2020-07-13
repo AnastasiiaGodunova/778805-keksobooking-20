@@ -12,8 +12,8 @@
   var photoChooser = document.querySelector('.ad-form__input');
   var previewPhoto = document.querySelector('.ad-form__photo');
 
-  var chooserListener = function (chooser) {
-    var file = chooser.files[0];
+  var onChooserClick = function (evt) {
+    var file = evt.target.files[0];
     var fileName = file.name.toLowerCase();
 
     var matches = FILE_TYPES.some(function (it) {
@@ -23,7 +23,7 @@
     if (matches) {
       var reader = new FileReader();
 
-      reader.addEventListener('load', function (evt) {
+      reader.addEventListener('load', function () {
         if (evt.target.id === 'avatar') {
           previewAvatar.src = reader.result;
         } else {
@@ -39,11 +39,6 @@
     }
   };
 
-  avatarChooser.addEventListener('change', function () {
-    chooserListener(avatarChooser);
-  });
-
-  photoChooser.addEventListener('change', function () {
-    chooserListener(photoChooser);
-  });
+  avatarChooser.addEventListener('change', onChooserClick);
+  photoChooser.addEventListener('change', onChooserClick);
 })();
