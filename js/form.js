@@ -2,7 +2,7 @@
 
 (function () {
   var adForm = document.querySelector('.ad-form');
-  var priceOfType = {
+  var typeToPrice = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
@@ -46,8 +46,8 @@
 
   typeSelect.addEventListener('change', function () {
     var value = typeSelect.value;
-    priceInput.min = priceOfType[value];
-    priceInput.placeholder = priceOfType[value];
+    priceInput.min = typeToPrice[value];
+    priceInput.placeholder = typeToPrice[value];
   });
 
   priceInput.addEventListener('invalid', function () {
@@ -75,7 +75,7 @@
   });
 
   var roomsAndCapacityDependence = function () {
-    var capacitySelectOptions = capacitySelect.options;
+    var capacitySelectOptions = Array.from(capacitySelect.options);
     capacitySelectOptions.forEach(function (el) {
       el.disabled = !roomsGuestsDependencies[roomsSelect.value].includes(el.value);
       el.selected = !el.disabled;

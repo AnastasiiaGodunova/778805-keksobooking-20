@@ -8,7 +8,7 @@
     window.pin.render(window.filter.update(adverts));
   };
 
-  var featurePins = function () {
+  var loadOffers = function () {
     window.backend.load(successHandler, window.message.error);
   };
 
@@ -20,6 +20,6 @@
 
   window.data = {
     update: updateAdverts,
-    features: featurePins
+    load: loadOffers
   };
 })();

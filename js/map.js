@@ -10,7 +10,6 @@
   var filtersFieldsets = filtersForm.querySelectorAll('fieldset');
   var formReset = adForm.querySelector('.ad-form__reset');
   var addressInput = adForm.querySelector('input[name=address]');
-  var isActive = false;
   var onFilterChange = window.debounce(window.data.update);
 
   var removeClass = function (elem, elemClass) {
@@ -38,29 +37,34 @@
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.data.features();
+    window.data.load();
 
     setDisabled(adFormElements);
     setDisabled(filtersElements);
     setDisabled(filtersFieldsets);
     getAddressPin(mapPinMain, 1);
 
-    isActive = true;
+    mapPinMain.removeEventListener('mousedown', onMapPinMainClick);
+    mapPinMain.removeEventListener('keydown', onMapPinMainEnterPress);
   };
 
-  mapPinMain.addEventListener('mousedown', function (evt) {
-    if (evt.button === window.const.LEFT_BTN_KEY && !isActive) {
+  var onMapPinMainClick = function (evt) {
+    if (evt.button === window.const.LEFT_BTN_KEY) {
       evt.preventDefault();
       activationPage();
     }
-  });
+  };
 
-  mapPinMain.addEventListener('keydown', function (evt) {
-    if (evt.key === window.const.ENTER_KEY && !isActive) {
+  var onMapPinMainEnterPress = function (evt) {
+    if (evt.key === window.const.ENTER_KEY) {
       evt.preventDefault();
       activationPage();
     }
-  });
+  };
+
+  mapPinMain.addEventListener('mousedown', onMapPinMainClick);
+
+  mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 
   var deactivationPage = function () {
     map.classList.add('map--faded');
@@ -73,8 +77,6 @@
     setDisabled(filtersElements);
     setDisabled(filtersFieldsets);
     getAddressPin(mapPinMain, 2);
-
-    isActive = false;
   };
 
   formReset.addEventListener('click', function (evt) {
