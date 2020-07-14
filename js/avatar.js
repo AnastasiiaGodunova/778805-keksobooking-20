@@ -12,7 +12,7 @@
   var photoChooser = document.querySelector('.ad-form__input');
   var previewPhoto = document.querySelector('.ad-form__photo');
 
-  var onChooserClick = function (evt) {
+  var onChooserChange = function (evt) {
     var file = evt.target.files[0];
     var fileName = file.name.toLowerCase();
 
@@ -39,6 +39,6 @@
     }
   };
 
-  avatarChooser.addEventListener('change', onChooserClick);
-  photoChooser.addEventListener('change', onChooserClick);
+  avatarChooser.addEventListener('change', onChooserChange);
+  photoChooser.addEventListener('change', onChooserChange);
 })();

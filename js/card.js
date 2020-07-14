@@ -17,11 +17,11 @@
 
     block.innerHTML = '';
 
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function (el) {
       var featureItem = document.createElement('li');
-      featureItem.classList.add('popup__feature', 'popup__feature--' + arr[i]);
+      featureItem.classList.add('popup__feature', 'popup__feature--' + el);
       featureFragment.appendChild(featureItem);
-    }
+    });
 
     block.appendChild(featureFragment);
   };
@@ -31,15 +31,15 @@
 
     block.innerHTML = '';
 
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function (el) {
       var photoImg = document.createElement('img');
-      photoImg.src = arr[i];
+      photoImg.src = el;
       photoImg.width = 45;
       photoImg.alt = 'Фотография жилья';
       photoImg.classList.add('popup__photo');
 
       photoFragment.appendChild(photoImg);
-    }
+    });
 
     block.appendChild(photoFragment);
   };

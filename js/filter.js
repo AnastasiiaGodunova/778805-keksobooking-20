@@ -6,7 +6,7 @@
     high: 50000
   };
 
-  var PriceParameters = {
+  var PriceToType = {
     low: function (price) {
       return price < PRICE_LIMITS.low;
     },
@@ -26,7 +26,7 @@
 
   var filterPrice = function (arr, value) {
     return arr.filter(function (it) {
-      return PriceParameters[value](it.offer.price);
+      return PriceToType[value](it.offer.price);
     });
   };
 

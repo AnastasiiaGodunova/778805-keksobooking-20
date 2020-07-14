@@ -8,7 +8,7 @@
     window.pin.render(window.filter.update(adverts));
   };
 
-  var defaultPins = function () {
+  var featurePins = function () {
     window.backend.load(successHandler, window.message.error);
   };
 
@@ -20,6 +20,6 @@
 
   window.data = {
     update: updateAdverts,
-    default: defaultPins
+    features: featurePins
   };
 })();

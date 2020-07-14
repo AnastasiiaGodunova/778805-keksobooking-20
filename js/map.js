@@ -4,9 +4,10 @@
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
-  var adFormElements = adForm.querySelectorAll('.ad-form__element');
+  var adFormElements = adForm.querySelectorAll('fieldset');
   var filtersForm = document.querySelector('.map__filters');
   var filtersElements = filtersForm.querySelectorAll('.map__filter');
+  var filtersFieldsets = filtersForm.querySelectorAll('fieldset');
   var formReset = adForm.querySelector('.ad-form__reset');
   var addressInput = adForm.querySelector('input[name=address]');
   var isActive = false;
@@ -16,10 +17,10 @@
     elem.classList.remove(elemClass);
   };
 
-  var setDisabled = function (arr) {
-    for (var i = 0; i < arr.length; i++) {
-      arr[i].disabled = !arr[i].disabled;
-    }
+  var setDisabled = function (elements) {
+    elements.forEach(function (el) {
+      el.disabled = !el.disabled;
+    });
   };
 
   var getAddressPin = function (obj, y) {
@@ -30,16 +31,18 @@
 
   setDisabled(adFormElements);
   setDisabled(filtersElements);
+  setDisabled(filtersFieldsets);
   getAddressPin(mapPinMain, 2);
 
   var activationPage = function () {
     removeClass(map, 'map--faded');
     removeClass(adForm, 'ad-form--disabled');
 
-    window.data.default();
+    window.data.features();
 
     setDisabled(adFormElements);
     setDisabled(filtersElements);
+    setDisabled(filtersFieldsets);
     getAddressPin(mapPinMain, 1);
 
     isActive = true;
@@ -68,6 +71,7 @@
 
     setDisabled(adFormElements);
     setDisabled(filtersElements);
+    setDisabled(filtersFieldsets);
     getAddressPin(mapPinMain, 2);
 
     isActive = false;

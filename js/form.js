@@ -76,10 +76,10 @@
 
   var roomsAndCapacityDependence = function () {
     var capacitySelectOptions = capacitySelect.options;
-    for (var i = 0; i < capacitySelectOptions.length; i++) {
-      capacitySelectOptions[i].disabled = !roomsGuestsDependencies[roomsSelect.value].includes(capacitySelectOptions[i].value);
-      capacitySelectOptions[i].selected = !capacitySelectOptions[i].disabled;
-    }
+    capacitySelectOptions.forEach(function (el) {
+      el.disabled = !roomsGuestsDependencies[roomsSelect.value].includes(el.value);
+      el.selected = !el.disabled;
+    });
   };
   roomsAndCapacityDependence();
 

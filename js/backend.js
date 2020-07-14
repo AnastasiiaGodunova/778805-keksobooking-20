@@ -37,15 +37,15 @@
     return xhr;
   };
 
-  var load = function (upload, error) {
-    var xhr = xhrCreate(upload, error);
+  var load = function (onLoad, onError) {
+    var xhr = xhrCreate(onLoad, onError);
 
     xhr.open('GET', URL + '/data');
     xhr.send();
   };
 
-  var save = function (data, upload, error) {
-    var xhr = xhrCreate(upload, error);
+  var save = function (data, onLoad, onError) {
+    var xhr = xhrCreate(onLoad, onError);
 
     xhr.open('POST', URL);
     xhr.send(data);

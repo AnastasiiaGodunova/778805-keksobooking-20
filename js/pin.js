@@ -33,19 +33,20 @@
     var fragment = document.createDocumentFragment();
     arr.length = arr.length > MAX_PINS ? MAX_PINS : arr.length;
 
-    for (var i = 0; i < arr.length; i++) {
-      fragment.appendChild(getFillPin(arr[i]));
-    }
+    arr.forEach(function (el) {
+      fragment.appendChild(getFillPin(el));
+    });
+
     mapPinsBlock.appendChild(fragment);
   };
 
   var removePins = function () {
     var mapPins = mapPinsBlock.querySelectorAll('.map__pin');
-    for (var i = 0; i < mapPins.length; i++) {
-      if (!mapPins[i].classList.contains('map__pin--main')) {
-        mapPins[i].remove();
+    mapPins.forEach(function (el) {
+      if (!el.classList.contains('map__pin--main')) {
+        el.remove();
       }
-    }
+    });
   };
 
   window.pin = {
