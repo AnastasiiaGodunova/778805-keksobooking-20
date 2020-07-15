@@ -23,7 +23,7 @@
   var roomsSelect = adForm.querySelector('select[name=rooms]');
   var capacitySelect = adForm.querySelector('select[name=capacity]');
 
-  var getCastomMessageTitle = function () {
+  var getCustomMessageTitle = function () {
     if (titleInput.validity.tooShort) {
       titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов, сейчас '
       + titleInput.value.length + ' символов');
@@ -37,11 +37,11 @@
   };
 
   titleInput.addEventListener('invalid', function () {
-    getCastomMessageTitle();
+    getCustomMessageTitle();
   });
 
   titleInput.addEventListener('input', function () {
-    getCastomMessageTitle();
+    getCustomMessageTitle();
   });
 
   typeSelect.addEventListener('change', function () {

@@ -27,7 +27,7 @@
     var successCopy = successMessage.cloneNode(true);
 
     successCopy.addEventListener('click', onSuccessClick);
-    document.addEventListener('keydown', onSuccesEscPress);
+    document.addEventListener('keydown', onSuccessEscPress);
 
     main.appendChild(successCopy);
   };
@@ -41,7 +41,7 @@
     closeSuccess();
   };
 
-  var onSuccesEscPress = function (evt) {
+  var onSuccessEscPress = function (evt) {
     if (evt.key === window.const.ESCAPE_KEY) {
       evt.preventDefault();
       closeSuccess();

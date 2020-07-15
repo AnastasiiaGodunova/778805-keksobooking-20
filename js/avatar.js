@@ -39,6 +39,17 @@
     }
   };
 
+  var removePhoto = function () {
+    previewAvatar.src = 'img/muffin-grey.svg';
+    previewPhoto.innerHTML = '';
+    avatarChooser.value = '';
+    photoChooser.value = '';
+  };
+
   avatarChooser.addEventListener('change', onChooserChange);
   photoChooser.addEventListener('change', onChooserChange);
+
+  window.avatar = {
+    remove: removePhoto
+  };
 })();

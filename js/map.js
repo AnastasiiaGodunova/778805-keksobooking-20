@@ -11,6 +11,8 @@
   var formReset = adForm.querySelector('.ad-form__reset');
   var addressInput = adForm.querySelector('input[name=address]');
   var onFilterChange = window.debounce(window.data.update);
+  var pinStartingPosX = mapPinMain.style.left;
+  var pinStartingPosY = mapPinMain.style.top;
 
   var removeClass = function (elem, elemClass) {
     elem.classList.remove(elemClass);
@@ -63,12 +65,14 @@
   };
 
   mapPinMain.addEventListener('mousedown', onMapPinMainClick);
-
   mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
 
   var deactivationPage = function () {
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
+
+    mapPinMain.style.left = pinStartingPosX;
+    mapPinMain.style.top = pinStartingPosY;
 
     adForm.reset();
     window.pin.remove();
@@ -77,6 +81,10 @@
     setDisabled(filtersElements);
     setDisabled(filtersFieldsets);
     getAddressPin(mapPinMain, 2);
+    window.avatar.remove();
+
+    mapPinMain.addEventListener('mousedown', onMapPinMainClick);
+    mapPinMain.addEventListener('keydown', onMapPinMainEnterPress);
   };
 
   formReset.addEventListener('click', function (evt) {

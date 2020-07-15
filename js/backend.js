@@ -3,6 +3,11 @@
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking';
   var TIMEOUT_IN_MS = 10000;
+  var METHOD = {
+    post: 'POST',
+    get: 'GET'
+  };
+
   var StatusCode = {
     OK: 200
   };
@@ -40,14 +45,14 @@
   var load = function (onLoad, onError) {
     var xhr = xhrCreate(onLoad, onError);
 
-    xhr.open('GET', URL + '/data');
+    xhr.open(METHOD.get, URL + '/data');
     xhr.send();
   };
 
   var save = function (data, onLoad, onError) {
     var xhr = xhrCreate(onLoad, onError);
 
-    xhr.open('POST', URL);
+    xhr.open(METHOD.post, URL);
     xhr.send(data);
   };
 
