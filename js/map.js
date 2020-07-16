@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var MIN_PRICE = 0;
+
   var map = document.querySelector('.map');
   var mapPinMain = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
@@ -10,6 +12,7 @@
   var filtersFieldsets = filtersForm.querySelectorAll('fieldset');
   var formReset = adForm.querySelector('.ad-form__reset');
   var addressInput = adForm.querySelector('input[name=address]');
+  var priceInput = adForm.querySelector('input[name=price]');
   var onFilterChange = window.debounce(window.data.update);
   var pinStartingPosX = mapPinMain.style.left;
   var pinStartingPosY = mapPinMain.style.top;
@@ -73,6 +76,8 @@
 
     mapPinMain.style.left = pinStartingPosX;
     mapPinMain.style.top = pinStartingPosY;
+    priceInput.placeholder = MIN_PRICE;
+    priceInput.min = MIN_PRICE;
 
     adForm.reset();
     window.pin.remove();
