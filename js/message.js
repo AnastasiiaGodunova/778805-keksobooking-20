@@ -35,6 +35,7 @@
   var closeSuccess = function () {
     var mainSuccessMessage = main.querySelector('.success');
     mainSuccessMessage.remove();
+    document.removeEventListener('keydown', onSuccessEscPress);
   };
 
   var onSuccessClick = function () {
@@ -51,6 +52,7 @@
   var closeError = function () {
     var mainErrorMessage = main.querySelector('.error');
     mainErrorMessage.remove();
+    document.removeEventListener('keydown', onErrorEscPress);
   };
 
   var onErrorClick = function () {
